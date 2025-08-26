@@ -1,32 +1,35 @@
-Student Information Portal
-A modern web application for managing and viewing student information with a secure authentication system.
+# 🎓 Student Information Portal
 
-📋 Overview
-The Student Information Portal is a full-stack web application that allows students to securely access their academic and personal information through an OTP-based authentication system. It features a clean, responsive dashboard that displays student profiles, educational details, and academic records.
+A **modern full-stack web application** for managing and viewing student academic & personal information with a **secure OTP-based authentication system**.
 
-✨ Features
-Secure Authentication: OTP-based login system via mobile verification
+---
 
-Student Dashboard: Clean, modern UI with collapsible sections
+## 📋 Overview
 
-Comprehensive Student Data:
+The **Student Information Portal** provides students with a centralized platform to securely access their **profiles, educational details, and academic records**.
+It comes with a **responsive dashboard**, **OTP login**, and support for **data export** in multiple formats.
 
-Personal information
+---
 
-10th and 12th grade details
+## ✨ Features
 
-Undergraduate academic records
+* 🔑 **Secure Authentication** – OTP-based login via mobile verification
+* 📊 **Student Dashboard** – Clean, modern UI with collapsible sections
+* 📝 **Comprehensive Student Data**:
 
-Semester-wise GPA tracking
+  * Personal information
+  * 10th and 12th grade details
+  * Undergraduate academic records
+  * Semester-wise GPA tracking
+* 📤 **Data Export** – Download data in **JSON, CSV, and PDF** formats
+* 📱 **Responsive Design** – Works seamlessly on desktop and mobile
+* 🚪 **Logout Functionality** – Secure session management
 
-Data Export: Download student data in JSON, CSV, and PDF formats
+---
 
-Responsive Design: Works seamlessly on desktop and mobile devices
+## 🏗️ Project Structure
 
-Logout Functionality: Secure session management
-
-🏗️ Project Structure
-text
+```
 Student Info Portal/
 ├── backend/
 │   ├── app.py              # Flask backend API
@@ -37,198 +40,185 @@ Student Info Portal/
 │   ├── index.html          # Main frontend application
 │   ├── server.py           # Optional development server
 │   └── README.md           # Frontend documentation
-🚀 Installation & Setup
-Prerequisites
-Python 3.7+
+```
 
-Flask
+---
 
-Pandas
+## 🚀 Installation & Setup
 
-A modern web browser
+### ✅ Prerequisites
 
-Backend Setup
-Navigate to backend directory:
+* Python **3.7+**
+* Flask
+* Pandas
+* A modern web browser
 
-bash
+### 🔹 Backend Setup
+
+```bash
 cd backend
-Install dependencies:
-
-bash
 pip install -r requirements.txt
-Prepare your data:
+```
 
-Place your Excel file with student data in the backend directory
+* Place your Excel file (`student_data.xlsx`) in the backend directory.
+* Ensure it contains **roll numbers, mobile numbers, and academic records**.
+* Run the Flask server:
 
-Ensure the file contains columns for roll numbers, mobile numbers, and academic records
-
-Run the Flask server:
-
-bash
+```bash
 python app.py
-The backend will start on http://localhost:5000
+```
 
-Frontend Setup
-Navigate to frontend directory:
+Backend runs at: **[http://localhost:5000](http://localhost:5000)**
 
-bash
+---
+
+### 🔹 Frontend Setup
+
+```bash
 cd frontend
-Run the development server:
-
-bash
 python server.py
-Or use Python's built-in server:
+```
 
-bash
+Or with Python’s built-in server:
+
+```bash
 python -m http.server 5500
-Access the application:
-Open your browser and navigate to http://localhost:5500
+```
 
-🔧 Configuration
-Environment Variables (Optional)
-The backend supports these environment variables:
+Frontend runs at: **[http://localhost:5500](http://localhost:5500)**
 
-bash
-DATA_FILE="student_data.xlsx"           # Path to Excel file
-SHEET_NAME="Sheet1"                     # Excel sheet name
-SECRET_KEY="your-secret-key"            # For token generation
-OTP_TTL_SECONDS="300"                   # OTP expiration time (5 minutes)
-TOKEN_TTL_SECONDS="1800"                # Token expiration time (30 minutes)
-DEBUG_OTP="true"                        # Show OTP in response for testing
-Excel File Format
-Your Excel file should include these columns (names can be customized):
+---
 
-University Roll No.
+## 🔧 Configuration
 
-Contact No. (or similar mobile number field)
+### 🌍 Environment Variables (Optional)
 
-Name of the Student
+```bash
+DATA_FILE="student_data.xlsx"    # Path to Excel file
+SHEET_NAME="Sheet1"              # Excel sheet name
+SECRET_KEY="your-secret-key"     # Token generation secret
+OTP_TTL_SECONDS="300"            # OTP validity (5 min)
+TOKEN_TTL_SECONDS="1800"         # Token validity (30 min)
+DEBUG_OTP="true"                 # Show OTP in response (testing only)
+```
 
-Father's Name
+### 📑 Excel File Format
 
-Section
+Your Excel file should include these columns:
 
-Gender
+* **University Roll No.**
+* **Contact No.** (mobile number)
+* **Student Name, Father’s Name, Section, Gender, DOB**
+* **University Email, Present Address**
+* **10th & 12th Board, Percentage/Grades**
+* **Branch, Specialization, CGPA**
+* **Semester-wise GPA (I, II, III, …)**
 
-Date of Birth
+---
 
-University E-Mail ID
+## 🎯 Usage
 
-Present Address
+1. **Login** – Enter roll number & mobile number to receive OTP
+2. **Verify** – Enter OTP to log in
+3. **Dashboard** – View personal & academic data
+4. **Navigate** – Expand/collapse sections
+5. **Export** – Download data as **JSON, CSV, or PDF**
+6. **Logout** – End session securely
 
-10th Board, 10th Percentage, etc.
+---
 
-12th Board, 12th Percentage, etc.
+## 🔌 API Endpoints
 
-Branch, Specialization, CGPA
+| Method | Endpoint           | Description                                  |
+| ------ | ------------------ | -------------------------------------------- |
+| POST   | `/api/request-otp` | Request OTP for authentication               |
+| POST   | `/api/verify-otp`  | Verify OTP & get token                       |
+| GET    | `/api/me`          | Fetch student data (auth required)           |
+| GET    | `/api/me/pdf`      | Download student data as PDF (auth required) |
+| GET    | `/api/health`      | Health check                                 |
 
-Semester-wise GPA (I Sem GPA, II Sem GPA, etc.)
+---
 
-🎯 Usage
-Login: Enter roll number and mobile number to receive OTP
+## 🛠️ Technology Stack
 
-Verification: Enter the OTP sent to your mobile device
+### 🌐 Frontend
 
-Dashboard: View your complete academic profile
+* HTML5, CSS3, JavaScript (ES6+)
+* Tailwind CSS for styling
+* FontAwesome icons
+* Responsive design
 
-Navigation: Use collapsible sections to explore different information categories
+### ⚙️ Backend
 
-Export: Download your data using the JSON, CSV, or PDF buttons
+* Python **Flask** web framework
+* **Pandas** for Excel processing
+* **itsdangerous** for token authentication
+* CORS support for cross-origin requests
 
-Logout: Use the logout button to end your session
+---
 
-🔌 API Endpoints
-POST /api/request-otp - Request OTP for authentication
+## 🔒 Security Features
 
-POST /api/verify-otp - Verify OTP and receive authentication token
+* OTP-based mobile verification
+* Token-based authentication with expiry
+* CORS configuration for secure requests
+* Input validation & error handling
+* Secure storage using `localStorage`
 
-GET /api/me - Get student data (requires authentication)
+---
 
-GET /api/me/pdf - Download student data as PDF (requires authentication)
+## 📱 Browser Support
 
-GET /api/health - Health check endpoint
+* Chrome ✅ (recommended)
+* Firefox
+* Safari
+* Edge
+* Mobile browsers (iOS Safari, Chrome Mobile)
 
-🛠️ Technology Stack
-Frontend
-HTML5, CSS3, JavaScript (ES6+)
+---
 
-Tailwind CSS for styling
+## 🤝 Contributing
 
-FontAwesome icons
+1. Fork the repo
+2. Create a feature branch → `git checkout -b feature/amazing-feature`
+3. Commit changes → `git commit -m 'Add amazing feature'`
+4. Push branch → `git push origin feature/amazing-feature`
+5. Open a Pull Request 🚀
 
-Modern responsive design
+---
 
-Backend
-Python Flask web framework
+## 📄 License
 
-Pandas for Excel data processing
+This project is for **educational purposes** only.
+⚠️ Ensure compliance with your institution’s **data privacy policies** before deploying.
 
-JWT-like token authentication using itsdangerous
+---
 
-CORS support for cross-origin requests
+## 🆘 Troubleshooting
 
-🔒 Security Features
-OTP-based mobile verification
+### Common Issues
 
-Token-based authentication with expiration
+* **CORS Errors** – Check frontend & backend ports
+* **Excel File Not Found** – Ensure file path is correct
+* **OTP Issues** – Verify mobile format matches input
+* **Token Errors** – Clear browser `localStorage`
 
-CORS configuration for secure cross-origin requests
+### Debugging Checklist
 
-Input validation and error handling
+* Backend health check → [http://localhost:5000/api/health](http://localhost:5000/api/health)
+* Frontend running at → [http://localhost:5500](http://localhost:5500)
+* Verify Excel columns & names
+* Open **browser console** for JS errors
 
-Secure token storage in localStorage
+---
 
-📱 Browser Support
-Chrome (recommended)
+## 🙏 Acknowledgments
 
-Firefox
+* Built with **Flask** & **Tailwind CSS**
+* Icons from **FontAwesome**
+* OTP authentication design for secure access
 
-Safari
+---
 
-Edge
+👉 This portal is designed to help **educational institutions** provide students with **secure access to academic records** while ensuring compliance with **data protection regulations**.
 
-Mobile browsers (iOS Safari, Chrome Mobile)
-
-🤝 Contributing
-Fork the repository
-
-Create a feature branch (git checkout -b feature/amazing-feature)
-
-Commit your changes (git commit -m 'Add amazing feature')
-
-Push to the branch (git push origin feature/amazing-feature)
-
-Open a Pull Request
-
-📄 License
-This project is for educational purposes. Please ensure compliance with your institution's data privacy policies when deploying.
-
-🆘 Troubleshooting
-Common Issues
-CORS Errors: Ensure both frontend and backend are running on correct ports
-
-Excel File Not Found: Check the file path in backend directory
-
-OTP Not Working: Verify mobile number format in Excel file matches input
-
-Token Errors: Clear browser localStorage if experiencing authentication issues
-
-Getting Help
-Check that both servers are running:
-
-Backend: http://localhost:5000/api/health
-
-Frontend: http://localhost:5500
-
-Verify Excel file format matches expected column names
-
-Check browser console for JavaScript errors
-
-🙏 Acknowledgments
-Built with Flask and Tailwind CSS
-
-Icons provided by FontAwesome
-
-OTP authentication pattern for secure access
-
-Note: This application is designed for educational institutions to provide students with secure access to their academic records. Always ensure compliance with data protection regulations when handling student information.
