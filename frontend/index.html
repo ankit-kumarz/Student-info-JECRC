@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    .collapsible { cursor: pointer; }
+    .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .collapsible.active + .collapsible-content { max-height: 500px; }
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-blue-100 min-h-screen">
+  <!-- Login Section -->
+  <div id="loginCard" class="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto mt-12 border border-gray-200">
+    <div class="flex flex-col items-center mb-6">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center shadow-md mb-2">
+        <i class="fa-solid fa-user-lock text-white text-3xl"></i>
+      </div>
+      <h2 class="text-2xl font-semibold text-gray-800">Student Login</h2>
+      <p class="text-sm text-gray-500 mt-1">Enter your credentials to access your dashboard</p>
+    </div>
+    <form id="loginForm" class="space-y-6">
+      <div>
+        <label class="block text-gray-700 font-medium mb-2">Roll Number</label>
+        <input type="text" id="roll" class="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400" required />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium mb-2">Country Code</label>
+        <input type="text" id="countryCode" value="+91" class="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400" required />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium mb-2">Mobile Number</label>
+        <input type="text" id="mobile" class="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400" required />
+      </div>
+      <div id="otpSection" style="display:none;">
+        <label class="block text-gray-700 font-medium mb-2">OTP</label>
+        <input type="text" id="otp" class="w-full border rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+      </div>
+      <div class="flex gap-4">
+        <button type="button" id="getOtpBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-3 rounded-md shadow-md flex-1 transition font-semibold">Get OTP</button>
+        <button type="button" id="verifyOtpBtn" class="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-md shadow-md flex-1 transition font-semibold" style="display:none;">Verify OTP</button>
+      </div>
+      <div id="loginMsg" class="text-sm text-center mt-2 text-gray-600"></div>
+    </form>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div id="dashboard" class="max-w-6xl mx-auto py-10 px-6" style="display:none;">
+    <!-- Profile Header -->
+    <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 border border-gray-200">
+      <div class="flex flex-col md:flex-row items-center md:items-start">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center shadow-md mb-4 md:mb-0 md:mr-6">
+          <i class="fa-solid fa-user-graduate text-white text-4xl"></i>
+        </div>
+        <div class="flex-1 text-center md:text-left">
+          <div class="flex justify-between items-start mb-3">
+            <h1 id="studentName" class="text-3xl font-semibold text-gray-800"></h1>
+            <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-md text-sm no-print shadow-md transition font-semibold">
+              <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600">
+            <div><span class="font-medium">Father's Name:</span> <span id="fatherName"></span></div>
+            <div><span class="font-medium">Roll No:</span> <span id="rollNo"></span></div>
+            <div><span class="font-medium">Section:</span> <span id="section"></span></div>
+            <div><span class="font-medium">Gender:</span> <span id="gender"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Personal Details -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="collapsible flex items-center justify-between p-5 bg-gradient-to-r from-purple-50 to-purple-100 cursor-pointer">
+          <div class="flex items-center">
+            <i class="fa-solid fa-user text-purple-500 mr-4 text-lg"></i>
+            <h2 class="font-semibold text-gray-700 text-lg">Personal Details</h2>
+          </div>
+          <i class="fa-solid fa-chevron-down text-purple-500"></i>
+        </div>
+        <div class="collapsible-content">
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div><span class="font-medium text-gray-600">Date of Birth:</span> <span id="dob"></span></div>
+              <div><span class="font-medium text-gray-600">Gender:</span> <span id="personalGender"></span></div>
+              <div><span class="font-medium text-gray-600">Contact No:</span> <span id="contact"></span></div>
+              <div><span class="font-medium text-gray-600">Email:</span> <span id="email"></span></div>
+              <div class="md:col-span-2"><span class="font-medium text-gray-600">Address:</span> <span id="address"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10th Details -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="collapsible flex items-center justify-between p-5 bg-gradient-to-r from-green-50 to-green-100 cursor-pointer">
+          <div class="flex items-center">
+            <i class="fa-solid fa-award text-green-500 mr-4 text-lg"></i>
+            <h2 class="font-semibold text-gray-700 text-lg">10th Details</h2>
+          </div>
+          <i class="fa-solid fa-chevron-down text-green-500"></i>
+        </div>
+        <div class="collapsible-content">
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div><span class="font-medium text-gray-600">Board:</span> <span id="tenthBoard"></span></div>
+              <div><span class="font-medium text-gray-600">Percentage:</span> <span id="tenthPercent"></span></div>
+              <div><span class="font-medium text-gray-600">School:</span> <span id="tenthSchool"></span></div>
+              <div><span class="font-medium text-gray-600">Year of Passing:</span> <span id="tenthYear"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12th Details -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="collapsible flex items-center justify-between p-5 bg-gradient-to-r from-purple-50 to-purple-100 cursor-pointer">
+          <div class="flex items-center">
+            <i class="fa-solid fa-medal text-purple-500 mr-4 text-lg"></i>
+            <h2 class="font-semibold text-gray-700 text-lg">12th Details</h2>
+          </div>
+          <i class="fa-solid fa-chevron-down text-purple-500"></i>
+        </div>
+        <div class="collapsible-content">
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div><span class="font-medium text-gray-600">Board:</span> <span id="twelfthBoard"></span></div>
+              <div><span class="font-medium text-gray-600">Percentage:</span> <span id="twelfthPercent"></span></div>
+              <div><span class="font-medium text-gray-600">School:</span> <span id="twelfthSchool"></span></div>
+              <div><span class="font-medium text-gray-600">Year of Passing:</span> <span id="twelfthYear"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Undergraduate Details -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden lg:col-span-2 border border-gray-200">
+        <div class="flex items-center justify-between p-5 bg-gradient-to-r from-indigo-50 to-indigo-100">
+          <div class="flex items-center">
+            <i class="fa-solid fa-graduation-cap text-indigo-500 mr-4 text-lg"></i>
+            <h2 class="font-semibold text-gray-700 text-lg">Undergraduate Details</h2>
+          </div>
+          <div class="flex space-x-3 no-print">
+            <button id="downloadJson" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm transition shadow-md font-semibold">JSON</button>
+            <button id="downloadCsv" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm transition shadow-md font-semibold">CSV</button>
+            <button id="downloadPdf" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm transition shadow-md font-semibold">PDF</button>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div><span class="font-medium text-gray-600">Branch:</span> <span id="branch"></span></div>
+            <div><span class="font-medium text-gray-600">Specialization:</span> <span id="specialization"></span></div>
+            <div><span class="font-medium text-gray-600">B.Tech %:</span> <span id="btechPercent"></span></div>
+            <div><span class="font-medium text-gray-600">CGPA:</span> <span id="cgpa"></span></div>
+            <div><span class="font-medium text-gray-600">Current Year/Sem:</span> <span id="currentSem"></span></div>
+          </div>
+          
+          <div class="mt-6">
+            <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-sm text-sm border border-gray-200">
+              <thead>
+                <tr class="bg-indigo-50 text-indigo-800">
+                  <th class="py-4 px-5 text-left font-semibold">Semester</th>
+                  <th class="py-4 px-5 text-left font-semibold">GPA/Marks</th>
+                </tr>
+              </thead>
+              <tbody id="ugSemTable" class="divide-y divide-gray-200"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Backend configuration - Pointing to your Flask backend
+    const BACKEND_URL = 'http://localhost:5000';
+
+    // API request helper
+    async function makeApiRequest(url, options = {}) {
+      try {
+        const response = await fetch(BACKEND_URL + url, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            ...options.headers,
+          },
+          mode: 'cors',
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'API request failed');
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+      }
+    }
+
+    // Collapsible sections
+    function setupCollapsibles() {
+      document.querySelectorAll('.collapsible').forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.toggle('active');
+          const content = this.nextElementSibling;
+          const icon = this.querySelector('.fa-chevron-down');
+          
+          if (icon) {
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+          }
+        });
+      });
+    }
+
+    // Logout functionality
+    function setupLogout() {
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          // Clear the token from localStorage
+          localStorage.removeItem('student_token');
+          authToken = '';
+          
+          // Reset form fields
+          document.getElementById('roll').value = '';
+          document.getElementById('mobile').value = '';
+          document.getElementById('otp').value = '';
+          document.getElementById('otpSection').style.display = 'none';
+          document.getElementById('verifyOtpBtn').style.display = 'none';
+          
+          // Show login screen
+          showLogin();
+          
+          // Show message
+          const msg = document.getElementById('loginMsg');
+          msg.textContent = 'You have been logged out successfully.';
+          msg.className = 'text-sm text-center mt-2 text-green-500';
+        });
+      }
+    }
+
+    // Auth logic
+    let authToken = localStorage.getItem('student_token') || '';
+    let studentData = null;
+
+    function showDashboard() {
+      document.getElementById('loginCard').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      setupCollapsibles();
+      setupLogout(); // Setup logout button
+    }
+
+    function showLogin() {
+      document.getElementById('loginCard').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'none';
+    }
+
+    async function fetchStudentData() {
+      try {
+        const data = await makeApiRequest('/api/me', {
+          headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        
+        studentData = data.data || data;
+        
+        // Profile Header
+        document.getElementById('studentName').textContent = studentData['Name of the Student'] || '';
+        document.getElementById('fatherName').textContent = studentData["Father's Name"] || '';
+        document.getElementById('rollNo').textContent = studentData['University Roll No.'] || '';
+        document.getElementById('section').textContent = studentData['Section'] || '';
+        document.getElementById('gender').textContent = studentData['Gender'] || '';
+        
+        // Personal Details
+        document.getElementById('dob').textContent = studentData['Date of Birth'] ? studentData['Date of Birth'].split(' ')[0] : '';
+        document.getElementById('personalGender').textContent = studentData['Gender'] || '';
+        document.getElementById('contact').textContent = studentData['Contact No.'] || '';
+        document.getElementById('email').textContent = studentData['University E-Mail ID'] || '';
+        document.getElementById('address').textContent = studentData['Present Address'] || '';
+        
+        // 10th Details
+        document.getElementById('tenthBoard').textContent = studentData['10th Board'] || '';
+        document.getElementById('tenthPercent').textContent = studentData['10th Percentage'] || '';
+        document.getElementById('tenthSchool').textContent = studentData['Name of School'] || '';
+        document.getElementById('tenthYear').textContent = studentData['Year of Passing'] || '';
+        
+        // 12th Details
+        document.getElementById('twelfthBoard').textContent = studentData['12th Board'] || '';
+        document.getElementById('twelfthPercent').textContent = studentData['12th Percentage'] || '';
+        document.getElementById('twelfthSchool').textContent = studentData['Name of School.1'] || '';
+        document.getElementById('twelfthYear').textContent = studentData['Year of Passing.1'] || '';
+        
+        // UG Details
+        document.getElementById('branch').textContent = studentData['Branch'] || '';
+        document.getElementById('specialization').textContent = studentData['Specialization'] || '';
+        document.getElementById('btechPercent').textContent = studentData['B.Tech Percentage'] || '';
+        document.getElementById('cgpa').textContent = studentData['CGPA'] || '';
+        
+        // Current sem/year badge
+        let currentSem = '';
+        if (studentData['VI Sem GPA']) currentSem = 'VI Sem';
+        else if (studentData['V Sem GPA']) currentSem = 'V Sem';
+        else if (studentData['IV Sem GPA']) currentSem = 'IV Sem';
+        else if (studentData['III Sem GPA']) currentSem = 'III Sem';
+        else if (studentData['II Sem GPA']) currentSem = 'II Sem';
+        else if (studentData['I Sem GPA']) currentSem = 'I Sem';
+        
+        document.getElementById('currentSem').innerHTML = currentSem ? 
+          `<span class="inline-block bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">${currentSem}</span>` : '';
+        
+        // UG Semester Table
+        const sems = [
+          { name: 'I Sem', key: 'I Sem GPA' },
+          { name: 'II Sem', key: 'II Sem GPA' },
+          { name: 'III Sem', key: 'III Sem GPA' },
+          { name: 'IV Sem', key: 'IV Sem GPA' },
+          { name: 'V Sem', key: 'V Sem GPA' },
+          { name: 'VI Sem', key: 'VI Sem GPA' }
+        ];
+        
+        let ugRows = '';
+        sems.forEach(sem => {
+          if (studentData[sem.key]) {
+            const isCurrent = currentSem === sem.name;
+            ugRows += `
+              <tr class="${isCurrent ? 'bg-green-50 font-semibold' : ''}">
+                <td class="py-3 px-4">
+                  ${sem.name} 
+                  ${isCurrent ? '<span class="ml-2 bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">Current</span>' : ''}
+                </td>
+                <td class="py-3 px-4">${studentData[sem.key]}</td>
+              </tr>`;
+          }
+        });
+        
+        document.getElementById('ugSemTable').innerHTML = ugRows;
+        
+        // Download buttons
+        document.getElementById('downloadJson').onclick = () => {
+          const blob = new Blob([JSON.stringify(studentData, null, 2)], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; 
+          a.download = 'student_data.json'; 
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+        
+        document.getElementById('downloadCsv').onclick = () => {
+          const csv = Object.entries(studentData).map(([k,v]) => `"${k}","${v}"`).join('\n');
+          const blob = new Blob([csv], {type: 'text/csv'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; 
+          a.download = 'student_data.csv'; 
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+        
+        document.getElementById('downloadPdf').onclick = () => {
+          window.print();
+        };
+        
+        showDashboard();
+      } catch (e) {
+        console.error('Failed to fetch student data:', e);
+        // Clear invalid token
+        localStorage.removeItem('student_token');
+        authToken = '';
+        showLogin();
+      }
+    }
+
+    // Login/OTP logic
+    document.getElementById('getOtpBtn').onclick = async function() {
+      const roll = document.getElementById('roll').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const countryCode = document.getElementById('countryCode').value.trim();
+      const msg = document.getElementById('loginMsg');
+      msg.textContent = '';
+
+      if (!roll || !mobile) {
+        msg.textContent = 'Enter roll and mobile.';
+        msg.className = 'text-sm text-center mt-2 text-red-500';
+        return;
+      }
+
+      this.disabled = true;
+      msg.textContent = 'Requesting OTP...';
+      msg.className = 'text-sm text-center mt-2 text-blue-500';
+
+      try {
+        const data = await makeApiRequest('/api/request-otp', {
+          method: 'POST',
+          body: JSON.stringify({ roll, mobile, country_code: countryCode })
+        });
+
+        document.getElementById('otpSection').style.display = 'block';
+        document.getElementById('verifyOtpBtn').style.display = 'inline-block';
+        msg.textContent = 'OTP sent! ' + (data.dev_otp ? `(For testing: ${data.dev_otp})` : 'Check your SMS');
+        msg.className = 'text-sm text-center mt-2 text-green-500';
+      } catch (e) {
+        msg.textContent = e.message || 'Failed to send OTP.';
+        msg.className = 'text-sm text-center mt-2 text-red-500';
+      }
+
+      this.disabled = false;
+    };
+
+    document.getElementById('verifyOtpBtn').onclick = async function() {
+      const roll = document.getElementById('roll').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const otp = document.getElementById('otp').value.trim();
+      const msg = document.getElementById('loginMsg');
+      msg.textContent = '';
+      
+      if (!roll || !mobile || !otp) {
+        msg.textContent = 'Enter all fields.';
+        msg.className = 'text-sm text-center mt-2 text-red-500';
+        return;
+      }
+      
+      this.disabled = true;
+      msg.textContent = 'Verifying OTP...';
+      msg.className = 'text-sm text-center mt-2 text-blue-500';
+      
+      try {
+        const data = await makeApiRequest('/api/verify-otp', {
+          method: 'POST',
+          body: JSON.stringify({ roll, mobile, otp })
+        });
+        
+        if (data.token) {
+          authToken = data.token;
+          localStorage.setItem('student_token', authToken);
+          msg.textContent = 'Login successful!';
+          msg.className = 'text-sm text-center mt-2 text-green-500';
+          await fetchStudentData();
+        } else {
+          msg.textContent = data.error || 'Invalid OTP.';
+          msg.className = 'text-sm text-center mt-2 text-red-500';
+        }
+      } catch (e) {
+        msg.textContent = e.message || 'Network error.';
+        msg.className = 'text-sm text-center mt-2 text-red-500';
+      }
+      
+      this.disabled = false;
+    };
+
+    // On load, try to fetch data if token exists
+    if (authToken) {
+      fetchStudentData();
+    } else {
+      showLogin();
+    }
+  </script>
+</body>
+</html>
