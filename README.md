@@ -91,7 +91,7 @@ Frontend runs at: **[http://localhost:5500](http://localhost:5500)**
 
 ## 🔧 Configuration
 
-### 🌍 Environment Variables (Optional)
+### 🌍 Environment Variables (Optional) 
 
 ```bash
 DATA_FILE="student_data.xlsx"    # Path to Excel file
