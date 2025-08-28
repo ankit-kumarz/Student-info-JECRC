@@ -10,8 +10,13 @@ The **Student Information Portal** provides students with a centralized platform
 It comes with a **responsive dashboard**, **OTP login**, and support for **data export** in multiple formats.
 
 ---
-
+## 🚀 Demo  
+<a href="https://youtu.be/apccSZ6sDcw" target="_blank">
+  <img src="https://img.shields.io/badge/Watch%20Demo-YouTube-red?style=for-the-badge&logo=youtube" alt="Watch Demo">
+</a>
 ## ✨ Features
+
+---
 
 * 🔑 **Secure Authentication** – OTP-based login via mobile verification
 * 📊 **Student Dashboard** – Clean, modern UI with collapsible sections
